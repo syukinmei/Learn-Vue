@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        单向数据绑定：<input type="text" v-bind:value="name">
+        <p>data中的name是: {{name}}</p>
+        <hr>
+        <br>
+        <br>
+
+        双向数据绑定：<input type="text" v-model:value="name">
+        <p>data中的name是: {{name}}</p>
+        <hr>
+
+        <!-- 简写： -->
+        <br>
+        <br>
+        单向数据绑定：<input type="text" :value="name">
+        双向数据绑定：<input type="text" v-model="name">
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                name: 'syukinmei',
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+<!-- 
+    Vue中有2种数据绑定方式：
+        1.单向绑定：(v-bind): 数据只能从data流向页面
+        2.双向绑定：(v-model): 数据不仅能从data流向页面，还可以从页面流向data。
+            备注：
+                1.双向绑定一般都应用在表单类元素上（如：input、select等）
+                2.v-model：可以简写为 v-model，因为v-model 默认收集的就是value值
+ -->

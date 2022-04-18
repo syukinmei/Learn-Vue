@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <h1>点击次数{{count}}</h1>
+        <!-- <button v-on:click='add'>点击</button> -->
+        <!-- 简写 -->
+        <button @click='add'>点击</button>
+
+        <hr>
+
+        <!-- 事件传参的写法 -->
+        <button @click="addNum(5)">点击加5</button>
+
+        <!-- 又想要even对象又想要传参写法 -->
+        <button @click="evFn($event, 66)">点击获取event</button>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        let vm = new Vue({
+            el: '#root',
+            data: {
+                count: 0,
+            },
+            methods: {
+                add: function (event, b) {
+                    // console.log(this === vm); // 此处的 this 就是vm
+                    console.log(event, b); // 第一个参数是事件对象，b是undefined
+                    this.count += 1;
+                },
+
+                addNum: function (num) {
+                    this.count += num;
+                },
+
+                evFn: function (ev, str) {
+                    console.log(ev, str);
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    事件的基本使用：
+        1.使用v-on:事件类型 = '事件处理函数' 或者 @事件类型 = '事件处理函数' 绑定事件
+        2.事件的回调需要配置在methods对象中，最终会在vm上
+        3.methods中配置的函数，不要使用箭头函数！否则this就不是vm了
+        4.methods中配置的函数，都是被Vue所管理的函数，this指向的是vm 或 组件实例对象
+        5.@click="fn" 和 @click='fn($event)' 效果一样，但后者可以传参
+ -->

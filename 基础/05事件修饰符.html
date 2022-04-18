@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+    <style>
+        div.box1 {
+            height: 50px;
+            background-color: red;
+        }
+        div.box2{
+            background-color: black;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <a href="https://www.baidu.com" @click="fn">跳转至百度</a><br>
+
+        <!-- 阻止默认事件 -->
+        <a href="https://www.baidu.com" @click.prevent="fn">阻止默认跳转</a><br>
+
+        <div class="box1" @click="boxFn">
+            <button @click.stop="fn">按钮</button>
+        </div>
+
+        <div class="box1" @click="boxFn">
+            <div class="box2" @click.self="box2Fn">
+                <button @click="fn">按钮</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+
+            },
+            methods: {
+                fn: function (e) {
+                    // e.preventDefault(); // 阻止默认行为
+                    alert('按钮被点击');
+                },
+
+                boxFn: function (ev) {
+                    alert('box 1 被点击了')
+                },
+
+                box2Fn: function(){
+                    alert('box2被点击了')
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    Vue中的事件修饰符：
+        1. prevent 阻止默认事件（常用）
+        2. stop 阻止事件冒泡（常用）
+        3. once 事件只触发一次（常用）
+        4. capture 使用事件的捕获模式
+        5. self 只有event.target 是当前操作的元素时才触发事件
+        6. passive 事件的默认行为立刻执行，无需等待事件回调执行完毕
+ -->
