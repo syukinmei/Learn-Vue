@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        姓 <input type="text" v-model="firstName"><br>
+        名 <input type="text" v-model="lastName"><br>
+        你的全名是：<span>{{firstName}} - {{lastName}}</span>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                firstName: '',
+                lastName: '',
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>
