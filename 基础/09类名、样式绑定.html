@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+    <style>
+        .base {
+            width: 200px;
+            height: 100px;
+            background-color: black;
+        }
+
+        .addRadius {
+            border-radius: 25px;
+        }
+
+        .addBorder {
+            border: 2px solid red;
+        }
+
+        .setBg {
+            background-color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <!-- 字符串写法：适用于 样式的类名不确定，需要动态指定 -->
+        <div class="base" v-bind:class="green"></div>
+        <br>
+
+        <!-- 对象写法： 适用于 要绑定的类名个数确定、名字确定，但是要动态决定要不要 -->
+        <div class="base" v-bind:class="{setBg:false, addRadius:flag, addBorder:true}"></div>
+        <br>
+
+        <!-- 数组写法： 适用于 绑定的样式个数不确定、名字也不确定 -->
+        <div class="base" v-bind:class="['setBg', flag ? 'addRadius' : '']"></div>
+
+
+        <div :style="{fontSize: fSize + 'px'}">div</div>
+        <div :style="styleObj">div</div>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                green: 'setBg',
+                flag: true,
+
+                fSize: 50,
+                styleObj: {
+                    fontSize: '70px'
+                }
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>

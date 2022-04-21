@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <!-- 遍历数组 -->
+        <ul>
+            <li v-for="item in personList" :key="item.i">{{item.name}} - {{item.age}} 岁</li>
+            <hr>
+            <li v-for="({age, name}, index) in personList" :key="item.i">{{name}} - {{age}} - {{index}}</li>
+        </ul>
+
+        <!-- 遍历对象 -->
+        <ul>
+            <li v-for="(value, key , index) in carObj" :key="index">{{value}} - {{key}} - {{index}}</li>
+        </ul>
+
+        <!-- 遍历字符串 -->
+        <ul>
+            <li v-for="(char, index) in str" :key="index">{{char}} - {{index}}</li>
+        </ul>
+
+        <!-- 遍历次数 -->
+        <ul>
+            <li v-for="(number, index) in 5" :key="index">{{number}} - {{index}}</li>
+        </ul>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                item: 1,
+
+                personList: [
+                    { id: 01, name: 'syukinmei', age: 23 },
+                    { id: 02, name: 'ebiebi', age: 18 },
+                    { id: 03, name: '张三', age: 35 },
+                ],
+
+                carObj: {
+                    name: '奥迪A5 Cabriolet',
+                    price: '50万起',
+                    color: 'offwhite'
+                },
+
+                str: 'helloWorld',
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>
