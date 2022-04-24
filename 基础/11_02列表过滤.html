@@ -8,17 +8,19 @@
     <title>Document</title>
     <!-- 引入Vue -->
     <script type="text/javascript" src="../Vuejs/vue.js"></script>
+
 </head>
 
 <body>
     <!-- 准备一个容器 -->
     <div id="root">
         过滤器：<input type="text" placeholder="请输入姓名" v-model='keyWord'>
+        <button @click="sortType=2">年龄升序</button>
+        <button @click="sortType=1">年龄降序</button>
+        <button @click="sortType=0">原顺序</button>
         <ul>
-            <li v-for="star in showList">
-                姓名:{{star.name}} - 年龄:{{star.age}}岁 - 性别:{{star.sex===1? '男' : star.sex===0 ? '女' : ''}}
-
-                {{getSex(star.sex)}}
+            <li v-for="star in showStars" :key="star.id">
+                姓名:{{star.name}} - 年龄:{{star.age}}岁 - 性别:{{getSex(star.sex)}}
             </li>
         </ul>
     </div>
@@ -28,35 +30,44 @@
         new Vue({
             el: '#root',
             data: {
+                sortType: 0, // 表示排序类型 0原顺序 1降序 2升序
                 keyWord: '',
                 starList: [
                     { id: '001', name: '马冬梅', age: 19, sex: 0 },
                     { id: '002', name: '周冬雨', age: 20, sex: 0 },
-                    { id: '003', name: '周杰伦', age: 21, sex: 1 },
+                    { id: '003', name: '周杰伦', age: 18, sex: 1 },
                     { id: '004', name: '温兆伦', age: 22, sex: 1 },
                 ],
-                showList: [],
+                // showList: [],
             },
             methods: {
                 getSex(sex) {
+                    console.log('方法')
                     if (sex === 0) return '女';
                     else if (sex === 1) return '男';
                 }
             },
             computed: {
                 showStars() {
-                    return 
+                    const filterList = this.starList.filter(item => item.name.includes(this.keyWord));
+                    // 判断是否需要排序
+                    if (this.sortType !== 0) {
+                        filterList.sort((a, b) => {
+                            return this.sortType === 1 ? a.age - b.age : b.age - a.age;
+                        });
+                    }
+                    return filterList;
                 }
             },
-            watch: {
-                keyWord: {
-                    immediate: true,
-                    handler(word) {
-                        console.log(word)
-                        this.showList = this.starList.filter(item => item.name.includes(word));
-                    }
-                }
-            }
+            // watch: {
+            //     keyWord: {
+            //         immediate: true,
+            //         handler(word) {
+            //             console.log(word)
+            //             this.showList = this.starList.filter(item => item.name.includes(word));
+            //         }
+            //     }
+            // }
 
         })
     </script>
