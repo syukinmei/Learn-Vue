@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <h1>内容是：{{msg}}</h1>
+
+        <h1 v-text="msg">内容是：</h1>
+
+        <div v-text="str"></div>
+        <div v-html="str"></div>
+
+        <div>
+            <h1 v-once>n的初始值为：{{n}}</h1>
+            <h1>现在n值为：{{n}}</h1>
+            <button @click="n++">点击n+1</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例  
+        new Vue({
+            el: '#root',
+            data: {
+                msg: '一段信息',
+                str: '<h1>str的内容。。。</h1>',
+                n: 0,
+            },
+            methods: {
+
+            },
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    v-text指令：
+        1.作用：向其所在的节点中渲染文本内容（更新元素的 textContent）
+        2.与插值语法的区别：v-text会替换掉节点中的内容，{{xx}} 插值语法则不会。
+
+    v-html指令：
+        1. 作用：向指定节点渲染包含html结构的内容。（更新元素的 innerHTML）
+        2. 与插值语法的区别：
+            （1）v-html会替换掉节点中所有的内容，插值语法则不会。
+            （2）v-html可以识别html结构
+        3.严重注意：v-html有安全性问题！！！
+            （1）在网站上动态渲染任意HTML是非常危险的，容易导致XSS攻击。
+            （2）一定要在可惜的内容上使用v-html，永远不要用在用户提交的内容上。
+
+    v-cloak指令（没有值）：
+        1. 本质是一个特殊的属性，Vue实例创建完毕并接管容器后，会删掉v-cloak属性。
+        2. 使用css配合 v-cloak可以解决网速慢时页面展示出{{xxx}}的问题。
+        这个指令 配合 css属性选择器 可以隐藏未编译的 Mustache 标签直到实例准备完毕
+            [v-cloak]{ display: none; / visibility:hidden;}
+
+    v-once指令（没有值）：
+        1. 所在节点在初次动态渲染后，就视为静态内容了。
+        2. 以后数据的改变不会引起v-once所在结构的更新，可以用于优化性能。
+
+    v-pre指令（没有值）
+        1. 跳过其所在节点的编译过程。
+        2. 可利用它跳过，没有使用指令语法、没有使用插值语法的节点，会加快编译
+ -->

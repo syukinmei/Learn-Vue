@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        {{test}}
+        <!-- 需求1 定义一个 v-big 指令，和v-text功能类似，但会把绑定的值放大10倍 -->
+        <h1>当前num的值是：<span v-text="num"></span></h1>
+        <h1>放大10倍后的n值是：<span v-big="num"></span></h1>
+        <button @click="num++">num+1</button>
+
+        <hr>
+        <!-- 需求2 定义一个 v-fbind 指令，和v-bind功能类似，但可以让其所绑定的input元素默认获取焦点 -->
+        <input type="text" v-fbind:value="num">
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                num: 0,
+                test: 1,
+            },
+            directives: {
+                // big: {
+                //     inserted: function (el, a, b,c,d) {
+                //         console.log(el, a, b,c,d)
+                //     }
+                // }
+                // big函数何时会被调用？1. 指令与元素成功绑定时(一上来就执行一次) 2. 指令所在的模板被重新解析时。
+                big(el, binding) {
+                    el.innerText = binding.value * 10;
+                },
+
+                fbind: {
+                    // 指令与元素成功绑定时（一上来）
+                    bind: function (el, binding) {
+                        el.value = binding.value;
+                    },
+                    // 指令所在元素被插入页面时
+                    inserted: function (el, binding) {
+                        el.focus();
+                    },
+                    // 指令所在元素的模版被重新解析时
+                    update: function (el, binding) {
+                        el.value = binding.value;
+                    }
+                }
+
+                // fbind(el, binding) {
+                //     // console.log(el,binding)
+                //     el.focus();
+                //     el.value = binding.value;
+                // }
+            }
+        })
+    </script>
+</body>
+
+</html>
