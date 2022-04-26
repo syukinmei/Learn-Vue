@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <!-- 第三部：使用组建标签 -->
+        <Above></Above>
+        <Below></Below>
+    </div>
+
+    <script type="text/javascript">
+
+        // 第一步：创建组建
+        const Above = Vue.extend({
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
+            `,
+            data() {
+                return {
+                    title: '这是头部的标题',
+                }
+            }
+        })
+
+        const Below = Vue.extend({
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
+            `,
+            data() {
+                return {
+                    title: '这是页脚的标题',
+                }
+            }
+        })
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            // 第二步：注册组建（局部注册）
+            components: {
+                Above,
+                Below,
+            }
+        })
+    </script>
+</body>
+
+</html>
