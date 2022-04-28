@@ -42,9 +42,11 @@
                 btn,
             }
         })
-        // console.log(Box)
-        // const test =new Box()
-        // console.log(test)
+
+        // console.log(Box);
+        // const test = new Box();
+        // console.log(test.__proto__.__proto__ === Vue.prototype);
+        // console.log(Box.prototype.__proto__ === Vue.prototype);
 
         // 创建vue实例
         const vm = new Vue({
@@ -77,4 +79,9 @@
         5. VueComponent 的实例对象为 组件实例对象。
             Vue的实例对象 简称 vm。
 
+
+        
+    1. 一个重要的内置关系：VueComponent.prototype.__proto__ === Vue.prototype
+        (实例的隐式原型属性 永远指向 自己缔造者的原型对象)
+    2. 为什么要有这样的关系：让组件实例对象(vc) 可以访问到Vue原型上的属性、方法。
  -->
