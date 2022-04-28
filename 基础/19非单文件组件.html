@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <!-- 第三部：使用组件标签 -->
+        <Above></Above>
+        <div>
+            <Btn></Btn>
+        </div>
+        <Below></Below>
+    </div>
+
+    <script type="text/javascript">
+
+        // 第一步：创建组件
+        const Above = Vue.extend({
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
+            `,
+            data() {
+                return {
+                    title: '这是头部的标题',
+                }
+            }
+        })
+
+        const Below = Vue.extend({
+            template: `
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
+            `,
+            data() {
+                return {
+                    title: '这是页脚的标题',
+                }
+            }
+        })
+
+        // 全局注册组件
+        const btn = Vue.extend({
+            template: `<button @click="count++">记录点击次数{{count}}</button>`,
+            data() {
+                return {
+                    count: 1
+                }
+            }
+        })
+        Vue.component('Btn', btn);
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            // 第二步：注册组件（局部注册）
+            components: {
+                Above,
+                Below,
+            }
+        })
+
+    </script>
+</body>
+
+</html>
+<!-- 
+    Vue中使用组件等三大步骤：
+        一、定义组件（创建组件）
+        二、注册组件
+        三、使用组件（写组件标签）
+    
+    如何定义一个组件？
+        使用 Vue.extend(options) 创建，其中 options 和 new Vue(options) 是传入的那个options几乎一样，但也有点区别：
+        区别：
+            1. el不要写，为什么？ ———— 最终所有的组件都要经过一个vm的管理，由vm中的el决定服务哪个容器
+            2. data 必须写成函数，为什么？————避免组件被复用时，数据存在引用关系。
+        备注：使用 template 可以配置组件的结构。
+
+    如何注册组件？
+        1. 局部注册：靠new Vue 的时候传入 components 选项
+        2. 全局注册：靠Vue.component('组件名', 组件)
+
+    编写组件标签
+        <Above></Above>
+ -->
+
+
+<!-- 
+     几个注意点：
+        1. 关于组件名
+            一个单词组成：
+                首字母小写：above
+                首字母大写：Above
+            多个单词组成：
+                kebab-case：my-above
+                CamelCase： MyAbove（需要使用Vue脚手架支持）
+            备注：
+                （1）组件名尽可能回避HTML中已有的元素名称，例如：h2、H2都不行
+                （2）可以使用name配置项指定组件在开发者工具中呈现的名字。
+
+        2. 关于组件标签
+            第一种写法 <above></above>
+            第二种写法 <above/>     不使用脚手架时，后续组件不能渲染
+
+        3. 一个简写方式：
+        const btn = Vue.extend(options) 可简写为： const btn = options
+
+  -->
