@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        爸爸的小金库有{{money}}元 <br>
+        <!-- 方法一 -->
+        儿子1<Son @give-hongbao="addMoney"></Son>
+
+        <!-- 方法二 -->
+        儿子2<Son ref="sonRef"></Son>
+    </div>
+
+    <template id="son">
+        <div>
+            <button @click="giveMoney">给爸爸发{{HongBao}}红包</button>
+            <button @click="relieve">解除自定义事件</button>
+        </div>
+    </template>
+
+    <script type="text/javascript">
+
+        const Son = Vue.extend({
+            template: '#son',
+            data() {
+                return {
+                    HongBao: 888,
+                }
+            },
+            methods: {
+                giveMoney() {
+                    console.log('我要触发自定义事件');
+                    this.$emit('give-hongbao', this.HongBao);
+                },
+                relieve() {
+                    // this.$off(); // 解除所有自定义事件
+                    // this.$off(['give-hongbao']); // 解除多个自定义事件
+                    this.$off('give-hongbao'); // 解除一个自定义事件
+                    console.error('解除自定义事件');
+                }
+            }
+        })
+
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                money: 1000,
+            },
+            // 方法一：使用methods
+            methods: {
+                addMoney(sonHongBao) {
+                    console.log('%c 自定义事件被触发了 ', 'background-color:green;');
+                    this.money += sonHongBao;
+                },
+            },
+            // 方法二：使用ref
+            mounted() {
+                this.$refs.sonRef.$on('give-hongbao', (sonHongbao) => {
+                    this.money += sonHongbao;
+                })
+            },
+            components: {
+                Son,
+            }
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    1. 一种组件间的通信方式，适用于 子组件 ===> 父组件
+
+    2. 使用场景：A是父组件，B是子组件，B想给A传递数据，那么就要在A中给B绑定自定义事件（事件的回调在A中）。
+
+    3. 绑定自定义事件：
+        1. 第一种方式：在父组件中 <Son @=myEventName = "fn" / >
+        2. 第二种方式：在父组件中：
+            <Son ref = "sonCV" /> 
+            ....
+            mounted(){
+                this.$refs.sonCV.$on('myEventName',this.fn);
+            }
+        3. 若想让自定义事件只触发一次，可以使用 once 修饰符，或者使用 $once 方法。
+
+    4. 触发自定义事件：子组件中 this.$emit('myEventName', ...数据)
+
+    5. 解除自定义事件 this.$off('myEventName')
+
+    6. 组件上可以绑定原生DOM事件，需要使用 native 修饰符。这是因为组件上的事件会被认为是自定义事件 如 <Son @click='fn' /> 会以为是名为click的自定义事件。
+
+    7. 注意：通过 this.$refs.xxx.$on('myEventName', fn) 绑定自定义事件时，回调要么配置在 methods 中，要么使用箭头函数，否则this指向会出现问题！！
+ -->
