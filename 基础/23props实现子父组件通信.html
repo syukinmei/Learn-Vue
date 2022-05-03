@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        爸爸的小金库有{{money}}元 <br>
+        <!-- 方法一 -->
+        儿子1<Son :give="addMoney"></Son>
+    </div>
+
+    <template id="son">
+        <div>
+            <button @click="giveMoney">给爸爸发{{HongBao}}红包</button>
+        </div>
+    </template>
+
+    <script type="text/javascript">
+
+        const Son = Vue.extend({
+            template: '#son',
+            data() {
+                return {
+                    HongBao: 888,
+                }
+            },
+            props: ['give'],
+            methods: {
+                giveMoney() {
+                    this.give(this.HongBao);
+                }
+            }
+        })
+
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                money: 1000,
+            },
+            methods: {
+                addMoney(money) {
+                    this.money += money;
+                }
+            },
+            components: {
+                Son,
+            }
+        })
+    </script>
+</body>
+
+</html>
