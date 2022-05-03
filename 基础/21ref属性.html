@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <Son ref="sonref" id="sonid"></Son>
+        <h1 ref="h1">哈哈哈</h1>
+    </div>
+    <template id="son">
+        <div>
+            son组件
+        </div>
+    </template>
+
+
+    <script type="text/javascript">
+
+        const Son = Vue.extend({
+            template: '#son',
+
+        })
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                father: 1,
+                son: 2
+            },
+            methods: {
+
+            },
+            mounted() {
+                console.log(this.$refs.sonref); // 获取到Son组件的实例对象
+                console.log(this.$refs.h1); // 获取到真实DOM
+
+                const sonDOM = document.getElementById('sonid');
+                console.log(sonDOM);
+            },
+            components: {
+                Son,
+            }
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    ref 被用来给元素或子组件注册引用信息。引用信息将会注册在父组件的 $refs 对象上。如果在普通的 DOM 元素上使用，引用指向的就是 DOM 元素；如果用在子组件上，引用就指向组件实例：
+    1. 被用来给元素或子组件注册引用信息（id的替代者）
+    2. 应用在html元素标签上获取的是真实DOM元素，应用到组件标签上是组件实例对象
+    3. 使用方法：
+        打标识：<h1 ref = "xxx"> ... </h1> 或者 <Son ref = "xxx" />
+        获取：this.$refs.xxx
+ -->
