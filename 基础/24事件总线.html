@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        爸爸的小金库有{{money}}元 <br>
+        <eldest-son></eldest-son>
+        <youngest-son></youngest-son>
+    </div>
+
+    <template id="eldestSon">
+        <div>
+            <button @click="giveMoney">给弟弟发{{HongBao}}红包</button>
+        </div>
+    </template>
+
+    <template id="youngestSon">
+        <div>
+            小儿子有{{money}}元
+        </div>
+    </template>
+
+    <script type="text/javascript">
+
+        const eldestSon = Vue.extend({
+            template: '#eldestSon',
+            data() {
+                return {
+                    HongBao: 200,
+                }
+            },
+            methods: {
+                giveMoney() {
+                    this.$EventBus.$emit('give-youngestSon', this.HongBao);
+                }
+            },
+        })
+        const youngestSon = Vue.extend({
+            template: '#youngestSon',
+            data() {
+                return {
+                    money: 100,
+                }
+            },
+            mounted() { 
+                this.$EventBus.$on('give-youngestSon', (money) => {
+                    this.money += money;
+                }) 
+            },
+            beforeDestroy() {
+                this.$EventBus.$off('give-youngestSon');
+            },
+        })
+
+
+        // 创建vue实例
+        const vm = new Vue({
+            el: '#root',
+            data: {
+                money: 1000,
+            },
+            beforeCreate() {
+                Vue.prototype.$EventBus = this; // 安装全局事件总线，所有的组件对象都可以看到 $EventBus 这个属性
+                // Vue.prototype.$EventBus = new Vue(); // 安装全局事件总线，所有的组件对象都可以看到 $EventBus 这个属性
+            },
+            components: {
+                'eldest-son': eldestSon,
+                'youngest-son': youngestSon,
+            },
+            mounted() {
+
+            },
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    全局事件总线（GlobalEventBus）
+
+    1. 一种组件间通信的方式，适用于任意组件间通信。
+
+    2. 安装全局事件总线：
+        new Vue({
+            ...
+            beforeCreate(){
+                Vue.prototype.$bus = this; // 安装全局事件总线，$bus就是当前应用vm
+            }
+        })
+
+    3. 使用事件总线：
+        1. 接收数据：A组件想接收数据，则在A组件中给$bus绑定自定义事件，事件的回调留在A组件自身。
+        mounted(){
+            this.$bus.$on('xxx', (data)=>{
+                ......
+            })
+        }
+
+        2. 提供数据：this.$bus.$emit('xxx', 数据);
+
+    4. 最好在beforeDestroy钩子中，用 this.$bus.$off 去解除当前组件所用到的事件。
+ -->

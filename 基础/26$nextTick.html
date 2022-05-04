@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <h1 ref="h1Ref">{{msg}}</h1>
+        <button @click="change">变得不随意</button>
+    </div>
+
+    <script type="text/javascript">
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                msg: '一段很随意的文字.....',
+            },
+            methods: {
+                change() {
+                    // 为什么 h1DOM.innerHTML 是一段很随意的文字？
+                    // 因为Vue不会因为你已改动data就重新解析模板，而是等到所有代码(可能设计多次改动数据)执行完毕后再重新解析模板，提升效率
+                    // js是单线程的，模板解析在数据发生改变后执行，修改代码是同步任务，模板解析是异步任务。
+                    const h1DOM = this.$refs.h1Ref;
+
+                    this.test = h1DOM;
+
+                    this.msg = '不随意的文字';
+
+                    console.log(h1DOM.innerHTML, h1DOM); // 一段很随意的文字..... <h1>​不随意的文字​</h1>​
+
+                    // nextTick 里的回调函数会在DOM节点更新完毕之后执行
+                    this.$nextTick(function () {
+                        console.log(this.$refs.h1Ref.innerHTML) // 不随意的文字
+                        console.log(this.test === this.$refs.h1Ref);
+                    });
+                    setTimeout(() => {
+                        console.log(this.$refs.h1Ref.innerHTML, this.$refs.h1Ref) // 不随意的文字 <h1>​不随意的文字​</h1>​
+                    }, 1)
+                }
+            },
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    nextTick
+
+    1. 语法： this.$nextTcik(回调函数);
+
+    2. 作用： 在下一次DOM更新结束后执行其指定的回调。
+
+    3. 什么时候用：当数据改变后，要基于更新后的新ODM进行某些操作时，要在 nextTick 所指定的回调函数中执行。
+ -->
