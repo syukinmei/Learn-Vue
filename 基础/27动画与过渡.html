@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<!-- 引入Vue -->
+	<script type="text/javascript" src="../Vuejs/vue.js"></script>
+
+	<!-- 引入 animate -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+
+	<style type="text/css">
+		/* 动画部分 */
+		@keyframes myanimation {
+			from {
+				transform: translateX(-100%);
+			}
+
+			to {
+				transform: translateX(0);
+			}
+		}
+
+		.zjm-enter-active {
+			animation: myanimation 1s linear;
+
+		}
+
+		.zjm-leave-active {
+			animation: myanimation 1s reverse;
+		}
+
+
+		/* 过渡部分 */
+		.cxt-enter,
+		.cxt-leave-to {
+			transform: translateX(-100%);
+		}
+
+		.cxt-enter-to {
+			transform: translateX(0);
+		}
+
+		.cxt-leave {
+			transform: translateX(0);
+		}
+
+		.cxt-enter-active,
+		.cxt-leave-active {
+			transition: 1s linear;
+		}
+
+		/* .guodu {
+            transition: 1s linear;
+        } */
+	</style>
+</head>
+
+<body>
+	<!-- 准备一个容器 -->
+	<div id="root">
+		<!-- 动画实现 -->
+		<button @click="changeShow">点击隐藏</button>
+		<transition name="zjm" appear>
+			<h1 style="background:orange" v-show="isShow">动画实现</h1>
+		</transition>
+
+		<hr>
+
+		<!-- 过渡实现 -->
+		<button @click="changeShow2">点击隐藏</button>
+		<transition name="cxt" appear>
+			<h1 class="guodu" style="background:orange" v-show="isShow2">过渡实现</h1>
+		</transition>
+
+		<hr>
+
+		<!-- 多个元素过度 -->
+		<button @click="changeShow3">点击隐藏</button>
+		<transition-group name="cxt" appear>
+			<h1 style="background:orange" v-show="isShow3" key="1">syukinmei</h1>
+			<h1 style="background:green" v-show="!isShow3" key="2">ebiebi</h1>
+		</transition-group>
+
+		<hr>
+		
+		<!-- 集成第三方动画 -->
+		<h1 class="animate__animated animate__flash">An animated element</h1>
+		
+		<button @click="changeShow4">点击隐藏</button>
+		<transition-group 
+			appear
+			name="animate__animated animate__bounce" 
+			enter-active-class="animate__swing"
+			leave-active-class="animate__backOutUp"
+		>
+			<h1 style="background:orange" v-show="isShow4" key="1">集成第三方动画</h1>
+		</transition-group>
+
+	</div>
+
+	<script type="text/javascript">
+		// 创建vue实例
+		new Vue({
+			el: '#root',
+			data: {
+				isShow: true,
+				isShow2: true,
+				isShow3: true,
+				isShow4: true,
+			},
+			methods: {
+				changeShow() {
+					this.isShow = !this.isShow;
+				},
+				changeShow2() {
+					this.isShow2 = !this.isShow2;
+				},
+				changeShow3() {
+					this.isShow3 = !this.isShow3;
+				},
+				changeShow4() {
+					this.isShow4 = !this.isShow4;
+				}
+			},
+		})
+	</script>
+</body>
+
+</html>
+<!-- 
+	Vue封装的过渡与动画
+		1. 作用： 在插入、更新或移除DOM元素时，在合适的时候给元素添加样式类名。
+
+		2. 类名添加时机： 
+			Enter 开始时 v-enter			Leave	开始时 v-leave
+				  结束前 v-enter-to					结束前 v-leave-to
+				  过程中 v-enter-active				过程中 v-leave-active
+
+		3. 写法： 
+			1. 
+			元素进入的样式：
+				1. v-enter：进入起点
+				2. v-enter-active：进入过程中
+				3. v-enter-to：进入的终点
+
+			元素离开的样式：
+				1. v-leave：离开的起点
+				2. v-leave-active：离开过程中
+				3. v-leave-to：离开的终点
+			
+			2. 使用 <transition> 包裹要过渡的元素，最好配置name属性
+
+			3. 备注：若有多个元素需要过渡，则需要使用 <transition-group> ,并每个元素都要指定key值。
+ -->
