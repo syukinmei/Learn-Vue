@@ -17,5 +17,5 @@ app.get('/family', (request, response) => {
 })
 
 app.listen(5001, (err) => {
-    if (!err) console.log("family这个服务器启动成功，请求家庭成员信息地址为:http://localhost:5001");
+    if (!err) console.log("family这个服务器启动成功,请求家庭成员信息地址为:http://localhost:5001");
 })
