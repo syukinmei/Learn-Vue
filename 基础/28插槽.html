@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+
+    <style>
+        .floatBox {
+            float: left;
+            margin: 20px;
+            padding: 10px;
+            width: 200px;
+            background-color: #ccc;
+            color: red;
+            border-radius: 20px;
+        }
+
+        /* 清除浮动 */
+        #root::after {
+            content: '';
+            /*转成成一个块元素*/
+            display: block;
+            /*清除两侧浮动*/
+            clear: both;
+        }
+
+        img {
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+
+        <!-- 默认插槽 和 具名插槽 -->
+        <visiting-card :information="familys.dad">
+            <img src="../favicon.ico" alt="">
+            <a slot="footer" href="javascript:void(0);">更多信息</a>
+        </visiting-card>
+
+        <visiting-card :information="familys.mom">
+            <a slot="footer" href="javascript:void(0);">更多信息</a>
+
+            <template v-slot:icon>
+                <span>👸</span>
+            </template>
+        </visiting-card>
+
+        <!-- 作用域插槽 -->
+        <current-name>
+            <template v-slot="slotProps">
+                <!-- <template slot-scope="slotProps"> -->
+                {{ slotProps.my_user.firstName }}
+            </template>
+        </current-name>
+    </div>
+
+    <template id="VisitingCard">
+        <div class="floatBox">
+            <div>
+                <h1>{{information.name}}</h1>
+                <!-- 定义一个插槽（挖个坑，等着组件等使用者进行填充） -->
+                <slot>没有设置背景</slot>
+            </div>
+            <hr>
+            <div>
+                <p>
+                    性别: {{information.sex}} <slot name="icon"></slot>
+                </p>
+                <p>年龄: {{information.age}}</p>
+            </div>
+
+            <!-- 具名插槽 -->
+            <slot name="footer"></slot>
+        </div>
+    </template>
+
+    <template id="currentName">
+        <span>
+            <slot :my_user="user">默认内容</slot>
+        </span>
+    </template>
+
+    <script type="text/javascript">
+        const VisitingCard = Vue.extend({
+            template: '#VisitingCard',
+            props: ['information'],
+        })
+
+        const currentName = Vue.extend({
+            template: '#currentName',
+            data() {
+                return {
+                    user: {
+                        firstName: 'syu',
+                        lastName: 'Kinmei',
+                    }
+                }
+            },
+        })
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                familys: {
+                    dad: { id: '001', name: 'syukinmei', age: 23, sex: '男' },
+                    mom: { id: '002', name: 'ebiebi', age: 18, sex: '女' },
+                }
+            },
+            methods: {
+
+            },
+            components: {
+                'visiting-card': VisitingCard,
+                'current-name': currentName
+            }
+        })
+    </script>
+</body>
+
+</html>
+<!-- 
+    插槽
+
+        1. 作用：让父组件可以向子组件指定位置插入html结构，也是一种组件间通信的方式，适用于 父组件 ===> 子组件
+
+        2. 分类：默认插槽、具名插槽、作用域插槽
+
+        3. 使用方式：
+            tips: v-slot can only be used on components or <template>.  v-slot属性只能用于组件或<template>上。
+
+            1. 默认插槽
+                父组件中：
+                    <Category>
+                        <div> html结构 </div>
+                    </Category> 
+            
+                子组件中：
+                    <template>
+                        <div>
+                            ...
+                            <slot>插槽默认内容</slot>
+                        </div>
+                    </template>
+
+            2. 具名插槽：
+                父组件中：
+                    <Category>
+                        <template v-slot:slotName1>
+                            <div> html结构 </div>
+                        </template>
+                    </Category>
+
+                     <Category>
+                        <span slot='slotName2'>
+                            <div> html结构 </div>
+                        </span>
+                    </Category>
+
+                子组件中：
+                    <template>
+                        <div>
+                            ...
+                            <slot name='slotName1'> 插槽默认内容 </slot>
+                            <slot name='slotName2'> 插槽默认内容 </slot>
+                        </div>
+                    </template>
+                    
+
+            3. 作用域插槽：
+                1. 理解：数据在组件的自身，但根据数据生成的结构需要组件的使用者决定。
+
+                父组件中：
+                    <Category>
+                        <template v-slot='slotProps'>
+                            {{slotProps.my_slot_props}}
+                        </template>
+                    </Category>
+
+                    <Category>
+                        <h1 slot-scope='slotProps'>
+                            {{slotProps.my_slot_props}}
+                        </h1>
+                    </Category>
+
+
+                子组件中：
+                    <template>
+                        <div>
+                            ...
+                            <slot :my_slot_Props="data"> 插槽默认内容 </slot>
+                        </div>
+                    </template>
+ -->
