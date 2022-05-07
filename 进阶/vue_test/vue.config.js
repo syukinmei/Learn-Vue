@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true,
   pages: {
     index: {
-      entry: 'src/main1.js'
+      entry: 'src/main.js'
     }
   },
   lintOnSave: false, // 关闭语法检查
