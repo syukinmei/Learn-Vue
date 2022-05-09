@@ -7,18 +7,21 @@
       <button @click="Upage">年龄+1</button>
     </div>
     <PeopleMsg name="ebiebi" sex="女" :age="18" info="我爱臭美" />
+    <VuexCount />
   </div>
 </template>
 
 <script>
 import HelloWorld from "./components/HelloWorld";
 import PeopleMsg from "./components/PeopleMsg.vue";
+import VuexCount from "./components/VuexCount";
 
 export default {
   name: "App",
   components: {
     HelloWorld,
     PeopleMsg,
+    VuexCount,
   },
   data() {
     return {
