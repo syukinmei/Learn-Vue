@@ -2,6 +2,7 @@
   <div id="app">
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
+    <VueRouter />
     <div>
       <PeopleMsg name="syukinmei" sex="男" :age="age" />
       <button @click="Upage">年龄+1</button>
@@ -15,6 +16,7 @@
 import HelloWorld from "./components/HelloWorld";
 import PeopleMsg from "./components/PeopleMsg.vue";
 import VuexCount from "./components/VuexCount";
+import VueRouter from "./components/Vue-router";
 
 export default {
   name: "App",
@@ -22,6 +24,7 @@ export default {
     HelloWorld,
     PeopleMsg,
     VuexCount,
+    VueRouter,
   },
   data() {
     return {
