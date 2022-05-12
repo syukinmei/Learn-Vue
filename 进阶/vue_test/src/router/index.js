@@ -10,11 +10,42 @@ Vue.use(VueRouter);
 // 引入路由组件
 import Home from '../components/Router-home';
 import About from '../components/Router-about';
+import Information from '../components/Router-info';
+import Setting from '../components/Router-setting';
+import Detail from '../views/RouterDetail';
+import SetInfo from '../views/RouterSettingInfo';
 
 // 创建一个路由表
 const routes = [
-    { path: '/home', component: Home },
-    { path: '/about', component: About },
+    {
+        path: '/home',
+        component: Home,
+        children: [
+            {
+                name: 'Information', // 命名路由
+                path: 'information',
+                component: Information,
+                children: [
+                    { path: 'detail', component: Detail }
+                ]
+            },
+            {
+                path: 'setting',
+                component: Setting,
+                children: [
+                    {
+                        name: 'setInfo',
+                        path: 'setInfo/:id/:name', // 占位符展位
+                        component: SetInfo
+                    }
+                ]
+            },
+        ]
+    },
+    {
+        path: '/about',
+        component: About
+    },
 ]
 
 // 创建并导出一个路由器
