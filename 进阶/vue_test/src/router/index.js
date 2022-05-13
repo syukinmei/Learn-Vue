@@ -27,7 +27,12 @@ const routes = [
                 component: Information,
                 children: [
                     { path: 'detail', component: Detail }
-                ]
+                ],
+                // 独享路由守卫（进入 /home/information 之前触发）
+                beforeEnter: (to, from, next) => {
+                    console.log('%c 独显路由守卫', 'background-color:green', to.path);
+                    next();
+                }
             },
             {
                 path: 'setting',
@@ -36,7 +41,7 @@ const routes = [
                     {
                         name: 'setInfo',
                         path: 'setInfo/:id/:name', // 占位符展位
-                        component: SetInfo
+                        component: SetInfo,
                     }
                 ]
             },
@@ -49,6 +54,19 @@ const routes = [
 ]
 
 // 创建并导出一个路由器
-export default new VueRouter({
+const router = new VueRouter({
     routes, // 是routes 不是 routers！！！！写错了不展示 也不报错 这个很坑的
 });
+
+// 全局前置守卫（初始化的时候 以及 每次路由切换之前 被调用）
+router.beforeEach((to, from, next) => {
+    console.log('路由要切换了', to.path);
+    next() // 放行
+})
+
+// 全局后置钩子（初始化的时候 以及 每次路由切换之后 被调用）
+router.afterEach((to, from) => {
+    console.log('路由切换完成了', to.path, from.path)
+})
+
+export default router;

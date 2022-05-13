@@ -38,6 +38,36 @@ export default {
       ],
     };
   },
+  // 组件内的守卫
+  // 通过路由规则，进入该组件 并且 渲染该组件 时被调用，此时不能获取组件实例this
+  beforeRouteEnter(to, from, next) {
+    console.log("———— information 组件内的守卫 Enter");
+    next((vm) => {
+      console.log(vm.family, "vmmmmmm");
+    });
+  },
+  beforeRouteUpdate(to, from, next) {
+    console.log("———— information 组件内的守卫 Update");
+    next();
+  },
+  // 通过路由规则，离开该组件对应的路由时被调用
+  beforeRouteLeave(t0, from, next) {
+    console.log("———— information 组件内的守卫 Leave");
+    next();
+  },
+
+  updated() {
+    console.log("update");
+  },
+  beforeCreate() {
+    console.log("beforeCreated");
+  },
+  beforeDestroy() {
+    console.log("beforeDestroy");
+  },
+  destroyed() {
+    console.log("destroyed");
+  },
 };
 </script>
 
