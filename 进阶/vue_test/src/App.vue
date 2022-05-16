@@ -17,6 +17,7 @@ import HelloWorld from "./components/HelloWorld";
 import PeopleMsg from "./components/PeopleMsg.vue";
 import VuexCount from "./components/VuexCount";
 import VueRouter from "./components/Vue-router";
+import watermark from "./utils/watermark";
 
 export default {
   name: "App",
@@ -35,6 +36,12 @@ export default {
     Upage() {
       this.age++;
     },
+  },
+  mounted() {
+    this.$nextTick(() => {
+      watermark.set("syukinmei", document.getElementById("app"));
+      console.log(document.getElementById("app"));
+    });
   },
 };
 </script>
