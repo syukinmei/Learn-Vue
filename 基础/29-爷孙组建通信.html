@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入Vue -->
+    <script type="text/javascript" src="../Vuejs/vue.js"></script>
+</head>
+
+<body>
+    <!-- 准备一个容器 -->
+    <div id="root">
+        <Father :toGrandsonHongbao="HongBao" ref="bb"></Father>
+        <button @click="giveMoney">爷爷给孙子发{{HongBao}}红包</button>
+    </div>
+
+    <!-- 父亲组件 -->
+    <template id="father">
+        <div>
+            <Grandson v-bind="$attrs"></Grandson>
+        </div>
+    </template>
+
+    <!-- 孙子组件 -->
+    <template id="grandson">
+        <div>
+            孙子有{{money}}元，和爷爷给的{{$attrs.tograndsonhongbao}}
+        </div>
+    </template>
+
+    <script type="text/javascript">
+
+        const Grandson = Vue.extend({
+            template: '#grandson',
+            inheritAttrs: false,
+            // 默认情况下父作用域的不被认作 props 的 attribute 绑定 (attribute bindings) 将会“回退”且作为普通的 HTML attribute 应用在子组件的根元素上。当撰写包裹一个目标元素或另一个组件的组件时，这可能不会总是符合预期行为。通过设置 inheritAttrs 到 false，这些默认行为将会被去掉
+            data() {
+                return {
+                    money: 10,
+                }
+            },
+            mounted() {
+                console.log(this.$attrs.tograndsonhongbao)
+            },
+        })
+
+        const Father = Vue.extend({
+            template: '#father',
+            components: {
+                Grandson,
+            },
+        })
+
+        // 创建vue实例
+        new Vue({
+            el: '#root',
+            data: {
+                HongBao: 0,
+            },
+            methods: {
+                giveMoney() {
+                    this.HongBao = 1000;
+                }
+            },
+            components: {
+                Father,
+            },
+            mounted(){
+                console.log(this.$refs.bb.$children)
+            }
+        })
+    </script>
+</body>
+
+</html>
